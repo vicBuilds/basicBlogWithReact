@@ -2,28 +2,32 @@ import { useState } from "react";
 import { firestore } from "../firebase";
 
 function CreatePost() {
-  const [title, setTitle] = useState();
-  const [subTitle, setSubTitle] = useState();
-  const [content, setContent] = useState();
+  const [title, setTitle] = useState("");
+  const [subTitle, setSubTitle] = useState("");
+  const [content, setContent] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(title);
-    console.log(subTitle);
-    console.log(content);
+    // console.log("Inside Handle Submit Function");
+    let form = document.querySelectorAll(".input");
+    //form.reset();
 
+    // console.log(typeof form);
     firestore.collection("post").add({
       title,
       content,
       subTitle,
       createdAt: new Date(),
     });
+    Object.values(form).forEach((node) => {
+      node.value = "";
+    });
   };
 
   return (
     <div className="create-post">
       <h1>Create a Post</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} id="form">
         <div className="form-field">
           <label>Title</label>
           <input
@@ -31,6 +35,7 @@ function CreatePost() {
             onChange={(e) => {
               setTitle(e.target.value);
             }}
+            className="input"
           />
         </div>
 
@@ -40,6 +45,7 @@ function CreatePost() {
             onChange={(e) => {
               setSubTitle(e.target.value);
             }}
+            className="input"
           />
         </div>
 
@@ -49,6 +55,7 @@ function CreatePost() {
             onChange={(e) => {
               setContent(e.target.value);
             }}
+            className="input"
           />
         </div>
 
